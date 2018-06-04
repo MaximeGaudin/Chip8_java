@@ -1,0 +1,38 @@
+package com.mgaudin.chip8.instructions;
+
+import com.mgaudin.chip8.*;
+import org.springframework.stereotype.Component;
+
+import static com.mgaudin.chip8.HexUtils.toHex;
+
+@Component
+public class CopyRegistersToMemory extends PrioritizedInstructionExecutor {
+
+    @Override
+    public boolean matches(byte[] opcode) {
+        return opcode[0] == 0xF && opcode[2] == 0x5 && opcode[3] == 0x5;
+    }
+
+    @Override
+    public String prettyPrince(byte[] opcode) {
+        return "COPY V0 -> " + toHex(opcode[1], 1) + ", I";
+    }
+
+    /*
+     * Store the values of registers V0 to VX inclusive in memory starting at address I
+     * I is set to I + X + 1 after operation
+     */
+    @Override
+    public void execute(byte[] opcode, CPU cpu, Screen screen, Memory memory, Keyboard keyboard, Timers timers) {
+        for (int i = 0; i <= opcode[1]; ++i) {
+            memory.set(
+                    memory.getAddressRegister(),
+                    memory.getRegister((byte) i)
+            );
+        }
+
+        memory.setAddressRegister(
+                (short) (memory.getAddressRegister() + opcode[1] + 1)
+        );
+    }
+}
