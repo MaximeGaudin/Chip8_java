@@ -27,11 +27,6 @@ public class Instruction {
             Keyboard keyboard,
             Timers timers
     ) {
-        System.out.println(prettyPrint());
         executor.execute(opcode, cpu, screen, memory, keyboard, timers);
-    }
-
-    public boolean isNotImplemented() {
-        return executor instanceof Missing;
     }
 }

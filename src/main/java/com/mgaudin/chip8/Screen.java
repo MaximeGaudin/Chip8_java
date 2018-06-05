@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.security.Key;
 
 import static com.mgaudin.chip8.HexUtils.toBinary;
 
@@ -53,6 +56,8 @@ public class Screen {
         window.getContentPane().add(canvas);
 
         window.setVisible(true);
+
+        window.addKeyListener(keyboard);
     }
 
     public void turnOff() {
